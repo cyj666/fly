@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fly.mapper.PermissionMapper">
+ 	<!-- <cache type = "org.mybatis.caches.ehcache.EhcacheCache"/>--> 
+ 	<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+
+    
+
+	<select id="getPermission" resultType="Permission" parameterType="permission">
+		select * from permissions
+		<where>
+		<if test="permissionId != null and permissionId !='' ">
+       	and permission_id = #{permissionId}
+        </if>
+        <if test="permissionName != null and permissionName !='' ">
+       	and permission_name = #{permissionName}
+        </if>
+        <if test="permissionDesc != null and permissionDesc !='' ">
+       	and permission_desc = #{permissionDesc}
+        </if>       
+		</where>
+	</select>
+	
+		
+	
+	<select id="getAllPermission" resultType="Permission">
+		select * from permissions
+	</select>
+	
+
+	
+	<insert id="addPermission" useGeneratedKeys="true" keyProperty="permission_id" parameterType="permission">
+		insert into
+		permissions(permission_name,permission_desc)
+		values(#{permissionName},#{permissionDesc})
+	</insert>
+	
+
+
+	<delete id="deletPermission" parameterType="permission">
+        delete  from permissions
+		<where>
+        <if test="permissionId != null and permissionId !='' ">
+       	and permission_id = #{permissionId}
+        </if> 
+        <if test="permissionName != null and permissionName !='' ">
+       	and permission_name = #{permissionName}
+        </if>
+        </where>
+    </delete>
+    
+         
+    <update id="updatePermission" parameterType="permission">
+    update permissions
+    <set>
+        <if test="permissionName != null and permissionName !='' ">
+       	 permission_name = #{permissionName},
+        </if>
+        <if test="permissionDesc != null and permissionDesc !='' ">
+       	permission_desc = #{permissionDesc},
+        </if>       
+    </set>
+    <where>
+    	permission_id = #{permissionId}
+    </where>  
+    </update>
+        
+
+</mapper>

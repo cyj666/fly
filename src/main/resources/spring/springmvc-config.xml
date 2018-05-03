@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+				        http://www.springframework.org/schema/mvc 
+				        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+				        http://www.springframework.org/schema/context 
+				        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- mvc注解驱动 -->
+	<mvc:annotation-driven />
+
+
+
+	<!-- 配置扫描器，使得@Controller注解生效 -->
+	<context:component-scan base-package="com.fly.controller" />
+
+	<!-- 定义视图解析器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+	<!-- springMVC的文件上传 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="5242880" />
+	</bean>
+
+	<!-- 处理静态资源拦截问题 -->
+	<mvc:default-servlet-handler />
+
+	<!-- JSR-303本地验证 -->
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+
+	<!-- 拦截器 -->
+	<!-- 多个拦截器，顺序执行 -->
+	<!--<mvc:interceptors>		
+		<mvc:interceptor>
+			<mvc:mapping path="/register" />
+			<bean class="com.blog.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
+			<mvc:mapping path="/register" />
+			<bean class="com.blog.interceptor.AuthorizedInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors> -->
+
+	<!--   
+       开启Shiro的注解(如@RequiresRoles，@RequiresPermissions)，需借助SpringAOP扫描使用Shiro注解的类，  
+       并在必要时进行安全逻辑验证  
+    -->  
+    
+    <bean  
+        class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>  
+    <bean  
+        class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">  
+        <property name="securityManager" ref="securityManager"></property>  
+    </bean>  
+
+</beans>

@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fly.mapper.UserMapper">
+ 	<!-- <cache type = "org.mybatis.caches.ehcache.EhcacheCache"/>--> 
+ 	<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+
+	<resultMap id="userMap" type="com.fly.pojo.User">  
+    <id property="userId" column="user_id"/>  
+    <result property="username" column="username"/>   
+    <result property="password" column="password"/>
+    <result property="locked" column="locked"/>  
+    <result property="status" column="status"/> 
+    <result property="createTime" column="create_time"/> 
+    <result property="lastTime" column="last_time"/> 
+    <result property="lastIp" column="last_ip"/> 
+    <result property="vip" column="vip"/>
+    <result property="sex" column="sex"/>
+    <result property="sign" column="sign"/>
+    <result property="address" column="address"/>
+    <result property="email" column="email"/>
+    <result property="phone" column="phone"/>
+    <result property="info" column="info"/>
+    <result property="credit" column="credit"/>
+    <result property="countDay" column="count_day"/>
+    <result property="lastSignTime" column="last_sign_time"/>
+     <result property="avatar" column="avatar"/>
+    <!-- 进行 多表关联插叙，先关联user和role -->  
+    <collection property="roleSet" column="role_id" ofType="com.fly.pojo.Role">  
+    <id property="roleId" column="role_id"/>  
+    <result property="roleName" column="role_name"/>  
+    <!-- 再在role中关联role和permission -->  
+    <collection property="permissionSet" column="permission_id" ofType="com.fly.pojo.Permission">  
+    <id property="permissionId" column="permission_id"/>  
+    <result property="permissionName" column="permission_name"/>  
+    </collection>
+    </collection>      
+    <!-- 只给看主题在标题和id，减轻数据库压力 -->
+    <collection property="topics" column="topic_id" ofType="com.fly.pojo.Topic">  
+    <id property="id" column="topic_id"/>  
+    <result property="title" column="topic_title"/>
+    <result property="createTime" column="topic_create_time"/>   
+    <result property="viewNo" column="view_no"/>   
+    </collection>     
+     <!-- 只给看回帖的内容和id，减轻数据库压力 -->
+    <collection property="replies" column="reply_id" ofType="com.fly.pojo.Reply">  
+    <id property="id" column="reply_id"/>  
+    <result property="content" column="reply_content"/>
+    <result property="createTime" column="reply_create_time"/>        
+    </collection> 
+    <collection property="message" column="id" ofType="com.fly.pojo.Message">  
+    <id property="id" column="id"/>  
+    <result property="message" column="message"/>
+    <result property="from" column="from"/>
+    <result property="to" column="to"/>        
+    </collection>
+    <collection property="collections" column="collection_topic_id" ofType="com.fly.pojo.Topic">  
+    <id property="id" column="collection_topic_id"/>  
+    <result property="title" column="topic_title"/>
+  	
+  	<result property="createTime" column="topic_create_time"/>   
+    <result property="viewNo" column="view_no"/>          
+    </collection>
+    </resultMap> 
+
+	<!-- 根据用户名得到详细用户信息 -->
+	<select id="getUserDetails" resultMap="userMap" parameterType="String">
+	SELECT u.user_id,u.username,u.password,u.create_time,u.last_time,u.last_ip,u.`status`,u.locked,
+	r.role_id,r.role_name,
+	p.permission_id,p.permission_name,
+	i.vip,i.address,i.credit,i.email,i.phone,i.sex,i.sign,i.info,i.count_day,i.last_sign_time,i.avatar,
+	re.id AS reply_id,re.content as reply_content,re.create_time as reply_create_time,
+	t.id AS topic_id,t.title AS topic_title,t.create_time as topic_create_time,t.view_no,
+	m.message,m.id,m.`from`,m.`to`,
+	c.topic_id AS collection_topic_id
+	FROM 
+	users u 
+	LEFT JOIN users_roles ur ON u.user_id = ur.user_id 
+	LEFT JOIN roles r ON r.role_id = ur.role_id
+	LEFT JOIN roles_permissions rp ON rp.role_id = r.role_id
+	LEFT JOIN permissions p ON p.permission_id = rp.permission_id
+	LEFT JOIN user_uinfo uu ON uu.user_id = u.user_id
+	LEFT JOIN uinfo i ON i.id = uu.uInfo_id
+	LEFT JOIN user_topic ut ON u.user_id = ut.user_id
+	LEFT JOIN topics t ON ut.topic_id = t.id
+	LEFT JOIN user_reply up ON up.user_id = u.user_id
+	LEFT JOIN replies re ON re.id = up.reply_id
+	LEFT JOIN message m ON m.`to` = u.user_id
+	LEFT JOIN collections c ON c.user_id = u.user_id
+	<where>
+	<if test="username != null and username !='' ">
+		u.username = #{username}
+	</if>
+	</where>
+	</select>
+	
+	<select id="getAllUserDetails" resultMap="userMap">
+	SELECT u.user_id,u.username,u.password,u.create_time,u.last_time,u.last_ip,u.`status`,u.locked,
+	r.role_id,r.role_name,
+	p.permission_id,p.permission_name,
+	i.vip,i.address,i.credit,i.email,i.phone,i.sex,i.sign,i.info,i.count_day,i.last_sign_time,i.avatar,
+	re.id AS reply_id,re.content as reply_content,re.create_time as reply_create_time,
+	t.id AS topic_id,t.title AS topic_title,t.create_time as topic_create_time,t.view_no,
+	m.message,m.id,m.`from`,m.`to`
+	FROM users u 
+	LEFT JOIN users_roles ur ON u.user_id = ur.user_id 
+	LEFT JOIN roles r ON r.role_id = ur.role_id
+	LEFT JOIN roles_permissions rp ON rp.role_id = r.role_id
+	LEFT JOIN permissions p ON p.permission_id = rp.permission_id
+	LEFT JOIN user_uinfo uu ON uu.user_id = u.user_id
+	LEFT JOIN uinfo i ON i.id = uu.uInfo_id
+	LEFT JOIN user_topic ut ON u.user_id = ut.user_id
+	LEFT JOIN topics t ON ut.topic_id = t.id
+	LEFT JOIN user_reply up ON up.user_id = u.user_id
+	LEFT JOIN replies re ON re.id = up.reply_id
+	LEFT JOIN message m ON m.`to` = u.user_id	
+	</select>
+
+
+	<!-- 得到用户自身信息 -->
+	<select id="getUser" resultType="User" parameterType="user">
+	select u.user_id,u.username,u.password,u.create_time,u.last_time,u.last_ip,u.`status`,u.locked,
+		i.vip,i.address,i.credit,i.email,i.phone,i.sex,i.sign,i.info,i.count_day,i.last_sign_time,i.avatar
+		from users u
+	LEFT JOIN user_uinfo uu ON uu.user_id = u.user_id
+	LEFT JOIN uinfo i ON i.id = uu.uInfo_id
+		<where>
+		<if test="userId != null and userId !='' ">
+       	and u.user_id = #{userId}
+        </if>
+        <if test="username != null and username !='' ">
+       	and username = #{username}
+        </if>
+		</where>
+	LIMIT 1
+	</select> 
+	
+	 
+	
+	
+	<select id="getUsers" resultType="User" parameterType="user"  useCache="false">
+		select * from users
+		<where>
+		<if test="userId != null and userId !='' ">
+       	and user_id = #{userId}
+        </if>
+        <if test="username != null and username !='' ">
+       	and username = #{username}
+        </if>
+		</where>
+	</select> 
+	
+	<select id="getAllUser" resultType="User" >
+		select * from users		
+	</select> 
+	
+
+	<insert id="addUser" useGeneratedKeys="true" keyProperty="user_id" parameterType="user">
+		insert into
+		users(username,password,status,locked,last_time,create_time,last_ip)
+		values(#{username},#{password},#{status},#{locked},#{lastTime},#{createTime},#{lastIp})
+	</insert>
+	
+	<insert id="addUserInfo" useGeneratedKeys="true" parameterType="int">
+		insert into
+		user_uinfo(user_id,uInfo_id)
+		values(#{userId},#{uInfoId})
+	</insert>
+	
+	<insert id="addUInfo"  parameterType="user">
+		insert into
+		uinfo(id,vip,sex,sign,address,email,phone,credit,info,last_sign_time,count_day,avatar)
+		values(#{userId},#{vip},#{sex},#{sign},#{address},#{email},#{phone},#{credit},#{info},#{lastSignTime},#{countDay},#{avatar})
+	</insert>
+	
+	
+	<insert id="addCollection"  parameterType="int">
+		insert into
+		collections(topic_id,user_id)
+		values(#{topicId},#{userId})
+	</insert>
+	
+	
+	<delete id="deleteCollection"  parameterType="int">
+ 		delete  from collections 
+		<where> 
+        <if test="userId != null and userId !='' ">
+       	and user_id = #{userId}
+        </if>
+        <if test="topicId != null and topicId !='' ">
+       	and topic_id = #{topicId}
+        </if>
+        </where>
+	</delete>
+	
+	
+	<delete id="deleteUser" parameterType="user">
+        delete  from users 
+		<where>
+        <if test="userId != null and userId !='' ">
+       	and user_id = #{userId}
+        </if>
+        <if test="username != null and username !='' ">
+       	and username = #{username}
+        </if>
+        </where>
+    </delete>
+    
+    <delete id="deleteUInfo" parameterType="int">
+        delete  from uinfo 
+		<where>
+        <if test="id != null and id !='' ">
+       	and id = (select uInfo_id from user_uinfo where user_id = #{id} limit 1)
+        </if>
+        </where>
+    </delete>
+    
+     <delete id="deleteUserInfo" parameterType="int">
+        delete  from user_uinfo 
+		<where>
+        <if test="userId != null and userId !='' ">
+       	and user_id = #{userId}
+        </if>       
+        </where>
+    </delete>
+         
+    <update id="updateUser" parameterType="user">
+    update users
+    <set>
+    	<if test="username != null and username !=''">
+    	username = #{username},
+    	</if>
+    	<if test="password != null and password !=''">
+    	password = #{password},
+    	</if>
+    	<if test="status != null ">
+    	status = #{status},
+    	</if>
+    	<if test="locked != null and locked !=''">
+    	locked = #{locked},
+    	</if>   	
+    	<if test="lastTime != null and lastTime !=''">
+    	last_time = #{lastTime},
+    	</if>
+    	<if test="lastIp != null and lastIp !=''">
+    	last_ip = #{lastIp}
+    	</if>
+    </set>
+    <where>
+    	user_id =#{userId}
+    </where>  
+    </update>
+    
+    <update id="updateUserInfo" parameterType="user">
+    update uinfo
+    <set>
+    	<if test="vip != null and vip !=''">
+    	vip = #{vip},
+    	</if>
+    	<if test="sex != null and sex !=''">
+    	sex = #{sex},
+    	</if>
+    	<if test="sign != null  and sign !=''">
+    	sign = #{sign},
+    	</if>
+    	<if test="address != null and address !=''">
+    	address = #{address},
+    	</if>   	
+    	<if test="email != null and email !=''">
+    	email = #{email},
+    	</if>
+    	<if test="phone != null and phone !=''">
+    	phone = #{phone},
+    	</if>
+    	<if test="credit != null and credit !=''">
+    	credit = #{credit},
+    	</if>
+    	<if test="info != null and info !=''">
+    	info = #{info},
+    	</if>
+    	<if test="lastSignTime != null and lastSignTime !=''">
+    	last_sign_time = #{lastSignTime},
+    	</if>
+    	<if test="countDay != null and countDay !=''">
+    	count_day = #{countDay},
+    	</if>
+    	<if test="avatar != null and avatar !=''">
+    	avatar = #{avatar}
+    	</if>
+    </set>
+    <where>
+    	id =(SELECT uu.uinfo_id FROM user_uinfo uu WHERE uu.user_id = #{userId} )
+    </where>  
+    </update>
+    
+    <!--================================================================================================================ -->
+    
+    <insert id="addUserRole" useGeneratedKeys="true"  parameterType="int">
+		insert into
+		users_roles(user_id,role_id)
+		values(#{userId},#{roleId})
+	</insert>
+	
+	 <insert id="addRolePermision" useGeneratedKeys="true" parameterType="int">
+		insert into
+		roles_permissions(role_id,permission_id)
+		values(#{roleId},#{permissionId})
+	</insert>
+   
+    <delete id="deleteUserRole" parameterType="int">
+		 delete  from users_roles 
+		<where>        
+       	user_id = #{userId}      
+       	and role_id = #{roleId}
+        </where>
+	</delete>
+	
+ 	<delete id="deleteRolePermision" parameterType="int">
+		 delete  from roles_permissions 
+		<where>        
+			role_id = #{roleId} 
+			<if test="permissionId != null">
+    		and permission_id = #{permissionId}
+    		</if>			
+        </where>
+	</delete>
+	
+	 <update id="updateRolePermision" parameterType="int">
+    update roles_permissions 
+    <set>   	   	
+    	permission_id = #{permissionId}
+    </set>
+    <where>
+    	role_id =#{roleId}
+    </where>  
+    </update>
+	
+	
+    
+</mapper>

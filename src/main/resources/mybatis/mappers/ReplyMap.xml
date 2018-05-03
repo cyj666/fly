@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fly.mapper.ReplyMapper">
+ 	<!-- <cache type = "org.mybatis.caches.ehcache.EhcacheCache"/>--> 
+ 	<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+
+	<resultMap id="replyMap" type="com.fly.pojo.Reply">  
+    <id property="id" column="id"/>  
+    <result property="content" column="content"/>     
+    <result property="like" column="like"/> 
+    <result property="createTime" column="create_time"/> 
+    <result property="floor" column="floor"/>  
+    <result property="accept" column="accept"/>     
+    <!-- 只给看用户在姓名和id，减轻数据库压力 -->
+    <association property="user" column="user_id" javaType="com.fly.pojo.User">  
+    <id property="userId" column="user_id"/>  
+    <result property="username" column="username"/>
+    <result property="vip" column="vip"/>
+    <result property="info" column="info"/>
+    <result property="status" column="status"/>
+    <result property="avatar" column="avatar"/>
+    </association>     
+     <!-- 简单的主题,包含id和标题-->
+    <association property="topic" column="topic_id" javaType="com.fly.pojo.Topic">  
+    <id property="id" column="topic_id"/>  
+    <result property="title" column="title"/>    
+    </association>      
+    </resultMap> 
+
+	
+	<select id="getReplyDetails" resultMap="replyMap" parameterType="Integer">
+	select r.id,r.content,r.`like`,r.create_time,r.floor,r.accept,
+			u.user_id,u.username,i.vip,i.info,u.status,i.avatar,
+			t.id AS topic_id,t.title
+	FROM replies r
+	LEFT JOIN topic_reply tr ON r.id = tr.reply_id
+	LEFT JOIN topics t ON t.id = tr.topic_id
+	LEFT JOIN user_reply ur ON r.id = ur.reply_id
+	LEFT JOIN users u ON u.user_id = ur.user_id
+	LEFT JOIN user_uinfo uu ON uu.user_id = u.user_id
+	LEFT JOIN uinfo i ON uu.uInfo_id = i.id
+	<where>
+	<if test="topicId != null and topicId !='' "><!-- 根据主题ID得到详细帖子内容 -->
+		t.id = #{topicId}
+	</if>
+	<if test="replyId != null and replyId !='' "><!-- 根据回帖ID得到详细帖子内容 -->
+		r.id = #{replyId}
+	</if>
+	</where>
+	ORDER BY floor ASC
+	</select>
+	
+	<select id="countReply" resultType="int" parameterType="Integer">
+	select count(reply_id) AS replyCount FROM topics t
+		RIGHT JOIN topic_reply tr ON t.id = tr.topic_id
+		LEFT JOIN replies r ON r.id = tr.reply_id
+		<where>
+			<if test="topicId != null and topicId !='' "><!-- 根据回帖ID得到详细帖子内容 -->
+				t.id = #{topicId}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 单表操作-添加 -->
+    <insert id="addReply" useGeneratedKeys="true" keyProperty="id" parameterType="reply">
+		insert into
+		replies(content,`like`,create_time,floor,accept)
+		values(#{content},#{like},#{createTime},#{floor},#{accept})
+	</insert>
+	
+	<!-- 添加用户-回复中间表操作 -->
+	 <insert id="addUserReply" useGeneratedKeys="true"  parameterType="int">
+		insert into
+		user_reply(user_id,reply_id)
+		values(#{userId},#{replyId})
+	</insert>
+	
+	<!-- 添加用户-回复中间表操作 -->
+	 <insert id="addTopicReply" useGeneratedKeys="true"  parameterType="int">
+		insert into
+		topic_reply(topic_id,reply_id)
+		values(#{topicId},#{replyId})
+	</insert>
+	
+	
+	
+	<!-- 单表操作-删除 -->
+	<delete id="deleteReply" parameterType="int">
+        delete  from replies 
+		<where>
+        <if test="Id != null and Id !='' ">
+       	and id = #{Id}
+        </if>       
+        </where>
+    </delete>
+	
+	<!-- 删除用户-回复中间表操作 -->
+	 <delete id="deleteUserReply" parameterType="int">
+		 delete  from user_reply
+		<where>
+        <if test="replyId != null and replyId !='' ">
+       	and reply_id = #{replyId}
+        </if>       
+        </where>
+	</delete>
+	
+	<!-- 删除主题-回复中间表操作 -->
+	 <delete id="deleteTopicReply" parameterType="int">
+		 delete  from topic_reply
+		<where>
+        <if test="replyId != null and replyId !='' ">
+       	and reply_id = #{replyId}
+        </if>       
+        </where>
+	</delete>
+	
+	
+	<!-- 单表操作-修改 -->
+	<update id="updateReply" parameterType="reply">
+    update replies
+    <set>    	
+    	<if test="content != null and content !=''">
+    	content = #{content},
+    	</if>
+    	<if test="like != null and like !='' ">
+    	`like` = #{like},
+    	</if>
+    	<if test="createTime != null and createTime !=''">
+    	create_time = #{createTime},
+    	</if>   	
+    	<if test="floor != null and floor !=''">
+    	floor = #{floor},
+    	</if>  
+    	<if test="accept != null and accept !=''">
+    	accept = #{accept},
+    	</if>  	
+    </set>
+    <where>
+    	id =#{id}
+    </where>  
+    </update>
+    
+</mapper>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fly.mapper.TopicMapper">
+ 	<!-- <cache type = "org.mybatis.caches.ehcache.EhcacheCache"/>--> 
+ 	<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+
+	<resultMap id="topicMap" type="com.fly.pojo.Topic">  
+    <id property="id" column="id"/>  
+    <result property="title" column="title"/>   
+    <result property="content" column="content"/>  
+    <result property="viewNo" column="view_no"/> 
+    <result property="createTime" column="create_time"/> 
+    <result property="reward" column="reward"/>      
+    <!-- 只给看用户在姓名和id，减轻数据库压力 -->
+    <association property="user" column="user_id" javaType="com.fly.pojo.User">  
+    <id property="userId" column="user_id"/>  
+    <result property="username" column="username"/> 
+    <result property="vip" column="vip"/>
+    <result property="info" column="info"/>
+     <result property="avatar" column="avatar"/>
+    </association>     
+     <!-- 详细的回帖-->
+    <collection property="replies" column="reply_id" ofType="com.fly.pojo.Reply">  
+    <id property="id" column="reply_id"/>  
+    <result property="content" column="reply_content"/>
+    <result property="like" column="like"/>
+    <result property="createTime" column="reply_create_time"/>
+    <result property="floor" column="floor"/>
+    </collection>
+     <!-- 标签-->
+    <collection property="tabs" column="tabs_id" ofType="com.fly.pojo.Tab">  
+    <id property="id" column="tabs_id"/>  
+    <result property="name" column="tab_name"/>     
+    </collection>     
+    </resultMap> 
+
+	<!-- 根据用户名得到详细用户信息 -->
+	<select id="getTopicDetails" resultMap="topicMap" parameterType="Integer">
+	select t.id,t.title,t.content,t.view_no,t.create_time,t.reward,
+		r.id AS reply_id,r.create_time AS reply_create_time,r.content AS reply_content,r.floor,r.`like`,
+		tabs.id AS tabs_id,tabs.`name` AS tab_name,
+		u.user_id AS user_id,u.username,
+		i.vip,i.info,i.avatar
+	FROM topics t
+	LEFT JOIN topic_reply tr ON t.id = tr.topic_id
+	LEFT JOIN replies r ON r.id = tr.reply_id
+	LEFT JOIN topic_tab tt ON tt.topic_id = t.id
+	LEFT JOIN tabs ON tt.tab_id = tabs.id
+	LEFT JOIN user_topic utp ON utp.topic_id = t.id
+	LEFT JOIN users u ON u.user_id = utp.user_id
+	LEFT JOIN user_uinfo uu ON uu.user_id = u.user_id
+	LEFT JOIN uinfo i ON uu.uInfo_id = i.id
+	<where>
+	<if test="topicId != null and topicId !='' ">
+		t.id = #{topicId}
+	</if>
+	<if test="tabId != null and tabId !='' ">
+		t.id IN(select t.id FROM topics t INNER JOIN topic_tab tt ON tt.topic_id = t.id WHERE tt.tab_id = #{tabId})
+	</if>
+	<if test="condition != null and condition !=''">
+		DATEDIFF(NOW(),t.create_time) <![CDATA[ <= ]]> 7
+	</if>
+	</where>
+	<if test='condition =="1" '><!-- 按照时间顺序（最新）-->
+		ORDER BY t.create_time Desc
+	</if>	
+	<if test='condition =="2" '><!-- 按照热议-->
+		ORDER BY t.view_no DESC
+	</if>
+	</select>
+	
+	<!-- 根据标签嵌套查询 -->
+	<select id="getTopicDetailsByTabs" resultMap="topicMap" parameterType="Integer">
+	select t.id,t.title,t.content,t.view_no,t.create_time,t.reward,
+		r.id AS reply_id,r.create_time AS reply_create_time,r.content AS reply_content,r.floor,r.`like`,
+		tabs.id AS tabs_id,tabs.`name` AS tab_name,
+		u.user_id AS user_id,u.username,
+		i.vip,i.info,i.avatar
+	FROM topics t
+	LEFT JOIN topic_reply tr ON t.id = tr.topic_id
+	LEFT JOIN replies r ON r.id = tr.reply_id
+	LEFT JOIN topic_tab tt ON tt.topic_id = t.id
+	LEFT JOIN tabs ON tt.tab_id = tabs.id
+	LEFT JOIN user_topic utp ON utp.topic_id = t.id
+	LEFT JOIN users u ON u.user_id = utp.user_id
+	LEFT JOIN user_uinfo uu ON uu.user_id = u.user_id
+	LEFT JOIN uinfo i ON uu.uInfo_id = i.id
+	<where>
+	<if test="tab1 != null and tab1 !='' ">
+		 t.id in (select DISTINCT t.id
+	FROM topics t	
+	LEFT JOIN topic_tab tt ON tt.topic_id = t.id
+	LEFT JOIN tabs ON tt.tab_id = tabs.id
+WHERE tabs.id =#{tab1} )
+	</if>
+	<if test="tab2 != null and tab2 !='' ">
+		 AND tabs.id = #{tab2}
+	</if>
+	</where>
+	
+	</select>
+	
+	<!-- 单表查询 -->
+	<select id="getTopic" resultType="Topic" parameterType="topic">
+	select * FROM topics 
+	<where>
+	<if test="title != null and title !='' ">
+	and title = #{title}
+	</if>
+	<if test="viewNo != null and viewNo !='' ">
+	and	view_no = #{viewNo}
+	</if>
+	<if test="reward != null and reward !='' ">
+	and	reward = #{reward}
+	</if>	
+	</where>	
+	</select>
+	
+	
+	
+	
+	<!-- 单表操作-添加 -->
+    <insert id="addTopic" useGeneratedKeys="true" keyProperty="id" parameterType="topic">
+		insert into
+		topics(title,content,view_no,create_time,reward)
+		values(#{title},#{content},#{viewNo},#{createTime},#{reward})
+	</insert>
+	
+	<!-- 添加用户-主题中间表操作 -->
+	 <insert id="addUserTopic" useGeneratedKeys="true" parameterType="int">
+		insert into
+		user_topic(user_id,topic_id)
+		values(#{userId},#{topicId})
+	</insert>
+	
+	<!-- 添加标签-主题中间表操作 --><!-- 标签基本上就不去写增删该查了，真要用等以后扩展。 -->
+	 <insert id="addTopicTabs" useGeneratedKeys="true" parameterType="int">
+		insert into
+		topic_tab(topic_id,tab_id)
+		values(#{topicId},#{tabId})
+	</insert>
+	
+	<!-- 单表操作-删除 -->
+	<delete id="deleteTopic" parameterType="int">
+        delete  from topics 
+		<where>
+        <if test="Id != null and Id !='' ">
+       	and id = #{Id}
+        </if>       
+        </where>
+    </delete>
+	
+	<!-- 删除用户-主题中间表操作 -->
+	 <delete id="deleteUserTopic" parameterType="int">
+		 delete  from user_topic 
+		<where>
+        <if test="topicId != null and topicId !='' ">
+       	and topic_id = #{topicId}
+        </if>       
+        </where>
+	</delete>
+	
+	<!-- 删除主题-标签中间表操作 -->
+	 <delete id="deleteTopicTab" parameterType="int">
+		 delete  from topic_tab
+		<where>
+        <if test="topicId != null and topicId !='' ">
+       	and topic_id = #{topicId}
+        </if>       
+        </where>
+	</delete>
+	
+	<!-- 删除主题-回复中间表操作 -->
+	 <delete id="deleteTopicReply" parameterType="int">
+		 delete  from topic_reply
+		<where>
+        <if test="topicId != null and topicId !='' ">
+       	and topic_id = #{topicId}
+        </if>       
+        </where>
+	</delete>
+	
+	
+	<!-- 单表操作-修改 -->
+	<update id="updateTopic" parameterType="topic">
+    update topics
+    <set>
+    	<if test="title != null and title !=''">
+    	title = #{title},
+    	</if>
+    	<if test="content != null and content !=''">
+    	content = #{content},
+    	</if>
+    	<if test="viewNo != null and viewNo !='' ">
+    	view_no = #{viewNo},
+    	</if>
+    	<if test="createTime != null and createTime !=''">
+    	create_time = #{createTime},
+    	</if>   	
+    	<if test="reward != null and reward !=''">
+    	reward = #{reward},
+    	</if>   	
+    </set>
+    <where>
+    	id =#{id}
+    </where>  
+    </update>
+	
+	<!-- 中间表操作-修改 -->
+	<update id="updateTopicTab" parameterType="int">
+    update topic_tab
+    <set>
+    	tab_id = #{tabId}
+    </set>
+    <where>
+    	tab_id = #{tabId} and topic_id = #{topicId}
+    </where>  
+    </update>
+</mapper>
