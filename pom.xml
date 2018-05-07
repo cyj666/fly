@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.cyj</groupId>
-  <artifactId>fly</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>fly Maven Webapp</name>
-  <url>http://maven.apache.org</url>
- <!-- 集中定义依赖版本号 -->
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.cyj</groupId>
+	<artifactId>fly</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>fly Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+	<!-- 集中定义依赖版本号 -->
 	<properties>
 		<shiro.version>1.3.2</shiro.version>
 
@@ -36,60 +36,30 @@
 
 
 	<dependencies>
-	
-	
-	<!-- activemq -->
-	<!-- 暂且用不到jms，等以后扩展 -->
-	<!--	<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-broker</artifactId>
-			<version>5.12.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-pool</artifactId>
-			<version>5.12.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-client</artifactId>
-			<version>5.12.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-spring</artifactId>
-			<version>5.12.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-core</artifactId>
-			<version>5.7.0</version>
-		</dependency> -->
+
+
+		<!-- activemq -->
+		<!-- 暂且用不到jms，等以后扩展 -->
+		<!-- <dependency> <groupId>org.apache.activemq</groupId> <artifactId>activemq-broker</artifactId> 
+			<version>5.12.1</version> </dependency> <dependency> <groupId>org.apache.activemq</groupId> 
+			<artifactId>activemq-pool</artifactId> <version>5.12.1</version> </dependency> 
+			<dependency> <groupId>org.apache.activemq</groupId> <artifactId>activemq-client</artifactId> 
+			<version>5.12.1</version> </dependency> <dependency> <groupId>org.apache.activemq</groupId> 
+			<artifactId>activemq-spring</artifactId> <version>5.12.1</version> </dependency> 
+			<dependency> <groupId>org.apache.activemq</groupId> <artifactId>activemq-core</artifactId> 
+			<version>5.7.0</version> </dependency> -->
 
 
 		<!--solr客户端solrj的依赖 -->
-		<!--<dependency>
-			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-solrj</artifactId>
-			<version>4.10.1</version>
-		</dependency>-->
-		
+		<!--<dependency> <groupId>org.apache.solr</groupId> <artifactId>solr-solrj</artifactId> 
+			<version>4.10.1</version> </dependency> -->
+
 		<!-- poi(操作excel等) -->
-		<!--<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>3.8</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-scratchpad</artifactId>
-			<version>3.8</version>
-		</dependency>
-		<dependency>
-			<groupId>jfree</groupId>
-			<artifactId>jfreechart</artifactId>
-			<version>1.0.13</version>
-		</dependency>-->
+		<!--<dependency> <groupId>org.apache.poi</groupId> <artifactId>poi-ooxml</artifactId> 
+			<version>3.8</version> </dependency> <dependency> <groupId>org.apache.poi</groupId> 
+			<artifactId>poi-scratchpad</artifactId> <version>3.8</version> </dependency> 
+			<dependency> <groupId>jfree</groupId> <artifactId>jfreechart</artifactId> 
+			<version>1.0.13</version> </dependency> -->
 
 
 		<!-- shiro -->
@@ -184,11 +154,15 @@
 		</dependency>
 
 		<!-- 通用Mapper，所有的单表的代码都不用编写 -->
-		<!--<dependency>
+		<dependency>
 			<groupId>com.github.abel533</groupId>
 			<artifactId>mapper</artifactId>
 			<version>${mapper.version}</version>
-		</dependency>-->
+		</dependency>
+
+		<!-- 通用Mapper，所有的单表的代码都不用编写 -->
+		<!--<dependency> <groupId>tk.mybatis</groupId> <artifactId>mapper</artifactId> 
+			<version>3.3.8</version> </dependency> -->
 
 		<!-- MySql -->
 		<dependency>
@@ -197,12 +171,8 @@
 			<version>${mysql.version}</version>
 		</dependency>
 		<!-- 超高性能连接池1 -->
-		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP-java7</artifactId>
-			<version>2.4.9</version>
-			<scope>compile</scope>
-		</dependency>
+		<!-- <dependency> <groupId>com.zaxxer</groupId> <artifactId>HikariCP-java7</artifactId> 
+			<version>2.4.9</version> <scope>compile</scope> </dependency> -->
 		<!-- 超高性能连接池2 -->
 		<dependency>
 			<groupId>com.alibaba</groupId>

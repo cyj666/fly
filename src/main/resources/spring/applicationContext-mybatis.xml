@@ -31,5 +31,12 @@
 		<!-- 扫描mapper包 -->
 		<property name="basePackage" value="com.fly.mapper"></property>
 	</bean>	
+	
+	
+	<!-- 通用mapper配置文件 -->
+	<!--<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">  
+    	<property name="basePackage" value="com.xinnet.**.mapper" />  
+    	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />  
+	</bean>  -->
 </beans>
 

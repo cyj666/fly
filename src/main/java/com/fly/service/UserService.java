@@ -3,6 +3,7 @@ package com.fly.service;
 import java.util.List;
 
 import com.fly.pojo.User;
+import com.fly.pojo.Users;
 
 public interface UserService {
 
@@ -27,5 +28,6 @@ public interface UserService {
 	public void deleteRolePermision(Integer roleId,Integer permissionId);
 	
 	public void updateRolePermision(Integer roleId,Integer permissionId);
+	public Users get();
 	
 }

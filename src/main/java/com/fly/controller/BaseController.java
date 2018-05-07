@@ -525,4 +525,11 @@ public class BaseController {
 		userService.deleteCollection(SecurityUtils.getSubject().getPrincipal().toString(), cid);
 		return "{\"status\":0,\"msg\":\"取消成功\",\"type\":\"add\"}";
 	}
+	
+	
+	@RequestMapping(value="/common",method=RequestMethod.GET,produces="text/html;charset=utf-8")
+	@ResponseBody
+	public String common() {
+		return userService.get().toString();
+	}
 }

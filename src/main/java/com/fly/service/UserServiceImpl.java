@@ -6,14 +6,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fly.mapper.CommonMapper;
 import com.fly.mapper.UserMapper;
 import com.fly.pojo.User;
+import com.fly.pojo.Users;
 
 @Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserMapper userMapper;
+	
+	@Autowired
+	CommonMapper commonMapper;
+	
 	
 	@Override
 	public User getUserById(int id) {
@@ -133,4 +139,10 @@ public class UserServiceImpl implements UserService {
 		userMapper.deleteCollection(user.getUserId(), topicId);
 	}
 
+	@Override
+	public Users get() {
+		Users user = new Users();
+		user.setUsername("admin");		
+		return (Users) commonMapper.selectOne(user);
+	}
 }
