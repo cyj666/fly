@@ -1,0 +1,635 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : 127.0.0.1_3306
+Source Server Version : 50717
+Source Host           : 127.0.0.1:3306
+Source Database       : fly
+
+Target Server Type    : MYSQL
+Target Server Version : 50717
+File Encoding         : 65001
+
+Date: 2018-05-07 16:00:43
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `collections`
+-- ----------------------------
+DROP TABLE IF EXISTS `collections`;
+CREATE TABLE `collections` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `topic_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `only` (`user_id`,`topic_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of collections
+-- ----------------------------
+INSERT INTO `collections` VALUES ('1', '1', '1');
+INSERT INTO `collections` VALUES ('2', '1', '2');
+INSERT INTO `collections` VALUES ('16', '1', '21');
+INSERT INTO `collections` VALUES ('19', '1', '24');
+INSERT INTO `collections` VALUES ('11', '1', '26');
+INSERT INTO `collections` VALUES ('8', '1', '28');
+INSERT INTO `collections` VALUES ('3', '2', '1');
+INSERT INTO `collections` VALUES ('4', '2', '2');
+
+-- ----------------------------
+-- Table structure for `message`
+-- ----------------------------
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `message` text,
+  `from` int(11) DEFAULT NULL,
+  `to` int(11) DEFAULT NULL,
+  `status` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of message
+-- ----------------------------
+INSERT INTO `message` VALUES ('1', '系统消息:欢迎加入社区', '0', '1', '0');
+INSERT INTO `message` VALUES ('2', '有人回答了你的求解', '0', '1', '0');
+
+-- ----------------------------
+-- Table structure for `permissions`
+-- ----------------------------
+DROP TABLE IF EXISTS `permissions`;
+CREATE TABLE `permissions` (
+  `permission_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `permission_name` varchar(255) NOT NULL,
+  `permission_desc` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`permission_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of permissions
+-- ----------------------------
+INSERT INTO `permissions` VALUES ('1', 'all', '所有权限');
+
+-- ----------------------------
+-- Table structure for `replies`
+-- ----------------------------
+DROP TABLE IF EXISTS `replies`;
+CREATE TABLE `replies` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `content` text,
+  `like` int(11) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `floor` int(10) unsigned DEFAULT NULL,
+  `accept` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of replies
+-- ----------------------------
+INSERT INTO `replies` VALUES ('1', '抢个2楼备用', '0', '2018-04-14 10:30:55', '2', '1');
+INSERT INTO `replies` VALUES ('4', '昨天晚上face[黑线] ', '0', '2018-04-17 08:23:58', '2', '0');
+INSERT INTO `replies` VALUES ('5', '米娜桑，今晚还有活动哦face[太开心] ', '0', '2018-04-17 08:27:07', '3', '0');
+INSERT INTO `replies` VALUES ('6', '@admin 真的吗', '0', '2018-04-17 08:27:47', '4', '0');
+INSERT INTO `replies` VALUES ('7', '顶顶', '0', '2018-04-17 08:48:42', '5', '0');
+INSERT INTO `replies` VALUES ('8', '顶顶', '0', '2018-04-17 08:48:49', '6', '0');
+INSERT INTO `replies` VALUES ('9', '顶顶', '0', '2018-04-17 08:48:53', '7', '0');
+INSERT INTO `replies` VALUES ('10', '顶顶', '0', '2018-04-17 08:48:57', '8', '0');
+INSERT INTO `replies` VALUES ('11', '顶顶', '0', '2018-04-17 08:51:32', '9', '0');
+INSERT INTO `replies` VALUES ('12', '顶顶', '0', '2018-04-17 08:51:35', '10', '0');
+INSERT INTO `replies` VALUES ('13', '顶顶', '0', '2018-04-17 08:51:39', '11', '0');
+INSERT INTO `replies` VALUES ('14', '顶顶', '0', '2018-04-17 08:51:43', '12', '0');
+INSERT INTO `replies` VALUES ('15', '顶顶', '0', '2018-04-17 08:51:46', '13', '0');
+INSERT INTO `replies` VALUES ('16', '顶顶', '0', '2018-04-17 08:51:49', '14', '0');
+INSERT INTO `replies` VALUES ('17', '顶顶', '0', '2018-04-17 08:51:53', '15', '0');
+INSERT INTO `replies` VALUES ('18', '顶顶', '0', '2018-04-17 08:51:57', '16', '0');
+INSERT INTO `replies` VALUES ('19', '顶顶', '0', '2018-04-17 08:52:00', '17', '0');
+INSERT INTO `replies` VALUES ('20', '顶顶', '0', '2018-04-17 08:52:04', '18', '0');
+INSERT INTO `replies` VALUES ('21', '顶顶', '0', '2018-04-17 08:52:11', '19', '0');
+INSERT INTO `replies` VALUES ('22', '顶顶', '0', '2018-04-17 08:52:14', '20', '0');
+INSERT INTO `replies` VALUES ('23', '顶顶', '0', '2018-04-17 08:52:20', '21', '0');
+INSERT INTO `replies` VALUES ('24', '顶顶', '0', '2018-04-17 08:52:24', '22', '0');
+INSERT INTO `replies` VALUES ('25', '顶顶', '0', '2018-04-17 08:52:28', '23', '0');
+INSERT INTO `replies` VALUES ('26', '顶顶', '0', '2018-04-17 08:52:33', '24', '0');
+INSERT INTO `replies` VALUES ('27', '顶顶', '0', '2018-04-17 08:52:38', '25', '0');
+INSERT INTO `replies` VALUES ('28', '顶顶', '0', '2018-04-17 08:52:43', '26', '0');
+INSERT INTO `replies` VALUES ('29', '顶顶', '0', '2018-04-17 08:52:47', '27', '0');
+INSERT INTO `replies` VALUES ('30', '顶顶', '0', '2018-04-17 08:52:51', '28', '0');
+INSERT INTO `replies` VALUES ('31', '顶顶', '0', '2018-04-17 08:52:55', '29', '0');
+INSERT INTO `replies` VALUES ('32', '顶顶', '0', '2018-04-17 08:52:59', '30', '0');
+INSERT INTO `replies` VALUES ('33', '顶顶', '0', '2018-04-17 08:53:03', '31', '0');
+INSERT INTO `replies` VALUES ('34', '顶顶', '0', '2018-04-17 08:53:08', '32', '0');
+INSERT INTO `replies` VALUES ('35', 'face[怒] ', '0', '2018-04-17 08:54:30', '33', '0');
+INSERT INTO `replies` VALUES ('36', 'mmp', '0', '2018-04-17 09:51:05', '2', '0');
+INSERT INTO `replies` VALUES ('37', 'face[黑线] ', '0', '2018-04-17 10:02:40', '34', '0');
+INSERT INTO `replies` VALUES ('38', '二楼是我的！！！face[嘻嘻] ', '0', '2018-04-17 10:07:02', '2', '0');
+INSERT INTO `replies` VALUES ('39', '？？？', '0', '2018-04-17 10:07:27', '3', '0');
+INSERT INTO `replies` VALUES ('40', '啦啦啦face[嘻嘻] ', '0', '2018-04-18 10:15:12', '1', '0');
+INSERT INTO `replies` VALUES ('41', '不知道大家有什么建议face[酷] ', '0', '2018-04-19 11:47:21', '1', '0');
+INSERT INTO `replies` VALUES ('42', '楼主加油啊face[鼓掌] ', '0', '2018-04-19 11:53:05', '2', '0');
+INSERT INTO `replies` VALUES ('43', '开始动工face[挖鼻] ', '0', '2018-04-19 13:39:46', '3', '0');
+INSERT INTO `replies` VALUES ('44', '进度如何？face[微笑] ', '0', '2018-04-19 13:42:19', '4', '0');
+INSERT INTO `replies` VALUES ('45', '@admin 还可以', '0', '2018-04-19 13:47:08', '5', '0');
+INSERT INTO `replies` VALUES ('46', '那就好face[偷笑] ', '0', '2018-04-19 13:47:25', '6', '0');
+INSERT INTO `replies` VALUES ('47', '！！！！', '0', '2018-04-19 13:47:51', '7', '0');
+INSERT INTO `replies` VALUES ('48', '第一face[嘻嘻] ', '0', '2018-04-19 14:06:48', '1', '0');
+INSERT INTO `replies` VALUES ('51', '爆炸face[疑问] ', '0', '2018-04-19 14:28:45', '3', '0');
+INSERT INTO `replies` VALUES ('52', '你说你face[神马] 呢face[疑问] ', '0', '2018-04-19 14:29:52', '3', '0');
+INSERT INTO `replies` VALUES ('53', '来送face[神马] ？', '0', '2018-04-20 09:50:31', '4', '0');
+INSERT INTO `replies` VALUES ('54', ' a(http://www.baidu.com)[http://www.baidu.com] ', '0', '2018-04-20 09:51:54', '5', '0');
+INSERT INTO `replies` VALUES ('55', '不给你安排得明明白白？[pre]\n\n HTML1513: 找到多余的 “html>” 标记。每个文档中只应存在一个 “html>” 标记。\n21 (14,1)\n\n HTML1503: 开始标记不符合要求。\n[/pre]', '0', '2018-04-20 09:52:35', '6', '0');
+INSERT INTO `replies` VALUES ('56', '垃圾玩意[hr]', '0', '2018-04-20 09:52:57', '7', '0');
+INSERT INTO `replies` VALUES ('57', 'img[http://192.168.1.192/png//6.jpg] ', '0', '2018-04-20 10:03:28', '8', '0');
+INSERT INTO `replies` VALUES ('58', '哈哈哈\nimg[http://192.168.1.192/png//8.jpg] ', '4', '2018-04-20 10:15:27', '1', '0');
+INSERT INTO `replies` VALUES ('59', '通报一下进展，完成度80%', '0', '2018-04-20 15:52:27', '8', '0');
+INSERT INTO `replies` VALUES ('63', '嗯？', '32', '2018-04-20 16:12:01', '1', '0');
+INSERT INTO `replies` VALUES ('64', '新人报到', '0', '2018-04-21 15:06:10', '2', '0');
+INSERT INTO `replies` VALUES ('65', '有没有大佬回答\n', '1', '2018-04-21 16:59:48', '1', '0');
+INSERT INTO `replies` VALUES ('66', '马上就可以了，基本功能已经okface[爱你] ', '2', '2018-04-21 17:00:43', '2', '0');
+INSERT INTO `replies` VALUES ('67', '@admin 好期待啊face[太开心] ', '1', '2018-04-21 17:04:04', '3', '0');
+INSERT INTO `replies` VALUES ('68', 'upupface[哈哈] ', '0', '2018-04-23 08:41:15', '1', '0');
+INSERT INTO `replies` VALUES ('69', '万一是我的呢？\nface[偷笑] ', '0', '2018-04-23 11:07:01', '2', '0');
+INSERT INTO `replies` VALUES ('70', '顶顶', '2', '2018-04-27 08:34:01', '1', '0');
+INSERT INTO `replies` VALUES ('71', '说说需求？是拿来打游戏还是就普通用用？', '1', '2018-04-27 08:35:31', '2', '0');
+INSERT INTO `replies` VALUES ('72', '游戏也打打，但不是重度游戏。主要是想要个性价比高一点的', '1', '2018-04-27 08:37:13', '3', '0');
+INSERT INTO `replies` VALUES ('73', '最近看了看小米6x，好像还不错的样子，不知道和小米note3比起来怎么样？\n', '1', '2018-04-27 08:38:14', '4', '0');
+INSERT INTO `replies` VALUES ('74', 'img[https://i8.mifile.cn/a1/pms_1524621078.90015819!560x560.jpg] ', '2', '2018-04-27 08:41:57', '5', '0');
+INSERT INTO `replies` VALUES ('75', 'img[http://192.168.1.192/png//小米note3.jpg] ', '1', '2018-04-27 08:42:56', '6', '0');
+INSERT INTO `replies` VALUES ('76', '电face[挖鼻] 子产品买新不买旧，所以就6X吧', '0', '2018-04-27 08:45:23', '7', '1');
+INSERT INTO `replies` VALUES ('77', 'ok,谢谢大佬face[爱你] ', '0', '2018-04-27 08:46:00', '8', '0');
+INSERT INTO `replies` VALUES ('78', 'face[酷] ', '0', '2018-04-27 08:47:57', '9', '0');
+INSERT INTO `replies` VALUES ('79', '洗吧，没抢到！！！face[怒] 这手机也要抢吗！！！', '0', '2018-04-27 11:31:10', '10', '0');
+INSERT INTO `replies` VALUES ('80', '???', '0', '2018-04-27 14:51:04', '1', '0');
+INSERT INTO `replies` VALUES ('81', '!!!', '0', '2018-04-28 15:03:41', '2', '0');
+
+-- ----------------------------
+-- Table structure for `roles`
+-- ----------------------------
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE `roles` (
+  `role_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(255) NOT NULL,
+  `role_desc` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of roles
+-- ----------------------------
+INSERT INTO `roles` VALUES ('1', 'admin', '超级管理员，有所有功能。');
+INSERT INTO `roles` VALUES ('2', 'member', '会员，享受大部分功能');
+INSERT INTO `roles` VALUES ('3', 'guest', '游客，享受部分功能');
+
+-- ----------------------------
+-- Table structure for `roles_permissions`
+-- ----------------------------
+DROP TABLE IF EXISTS `roles_permissions`;
+CREATE TABLE `roles_permissions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of roles_permissions
+-- ----------------------------
+INSERT INTO `roles_permissions` VALUES ('1', '1', '1');
+
+-- ----------------------------
+-- Table structure for `tabs`
+-- ----------------------------
+DROP TABLE IF EXISTS `tabs`;
+CREATE TABLE `tabs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tabs
+-- ----------------------------
+INSERT INTO `tabs` VALUES ('1', '未结');
+INSERT INTO `tabs` VALUES ('2', '已结');
+INSERT INTO `tabs` VALUES ('3', '讨论');
+INSERT INTO `tabs` VALUES ('4', '提问');
+INSERT INTO `tabs` VALUES ('5', '分享');
+INSERT INTO `tabs` VALUES ('6', '建议');
+INSERT INTO `tabs` VALUES ('7', '公告');
+INSERT INTO `tabs` VALUES ('8', '动态');
+INSERT INTO `tabs` VALUES ('9', '置顶');
+INSERT INTO `tabs` VALUES ('10', '精贴');
+INSERT INTO `tabs` VALUES ('11', '审核中');
+
+-- ----------------------------
+-- Table structure for `topics`
+-- ----------------------------
+DROP TABLE IF EXISTS `topics`;
+CREATE TABLE `topics` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `content` text,
+  `view_no` int(10) unsigned DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `reward` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of topics
+-- ----------------------------
+INSERT INTO `topics` VALUES ('1', '（恢复）帖子1', '复活帖子1', '2', '2018-04-23 11:12:35', '30');
+INSERT INTO `topics` VALUES ('2', 'Fly社区上线倒计时', '<p>Fly社区即将上线,届时将开展许多活动，更有精美礼品发放。</p>ps:<hr/><p>#6，#66，#666层可得到官方送出的VIP10免费一年！(*^_^*)</p>', '18', '2018-04-16 10:30:58', '50');
+INSERT INTO `topics` VALUES ('12', '水楼', '<p>欢迎灌水</p>', '1', '2018-04-16 14:10:09', '10');
+INSERT INTO `topics` VALUES ('14', '测试发帖', '<img alt=\"[微笑]\" title=\"[微笑]\" src=\"http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/5c/huanglianwx_thumb.gif\">', '8', '2018-04-16 15:03:50', '20');
+INSERT INTO `topics` VALUES ('15', '新人报道', '水水更健康face[嘻嘻] ', '0', '2018-04-16 15:43:25', '20');
+INSERT INTO `topics` VALUES ('17', '有个问题', '社区啥时候上线呀？face[疑问] ', '2', '2018-04-16 16:10:03', '20');
+INSERT INTO `topics` VALUES ('18', 'Fly社区上线第二天，多重好礼拿到手软！', '不知道米娜桑昨天有没有玩尽兴呢，今天我们依旧准备了许多好礼等候大家。', '3', '2018-04-17 10:05:53', '80');
+INSERT INTO `topics` VALUES ('19', '上线第三天', '活动火爆进行中，还等什么，马上加入吧！face[偷笑] ', '6', '2018-04-18 10:14:23', '20');
+INSERT INTO `topics` VALUES ('20', '社区开发进度', '主要模块完成的差不多了，还有一些小模块。预计今天下午可以完成。face[嘻嘻] ', '29', '2018-04-19 11:46:12', '80');
+INSERT INTO `topics` VALUES ('21', '新人报道', '新人报道，求有没有大佬罩着萌新啊face[可怜] ', '113', '2018-04-19 14:05:56', '20');
+INSERT INTO `topics` VALUES ('22', '新的一天', '来灌水玩img[http://192.168.1.192/png//5.jpg] ', '14', '2018-04-20 10:05:08', '20');
+INSERT INTO `topics` VALUES ('24', '记录贴', '今天是4-20', '39', '2018-04-20 11:20:28', '20');
+INSERT INTO `topics` VALUES ('25', '灌水喽', '以后水经验就在此楼，另开新帖水经验的一律封禁。\nimg[http://192.168.1.192/png//8.jpg] ', '68', '2018-04-20 11:23:29', '20');
+INSERT INTO `topics` VALUES ('26', '刚才的不算', '再来face[熊猫] ', '8', '2018-04-20 11:25:09', '80');
+INSERT INTO `topics` VALUES ('27', '再来一条', '大赦天下', '24', '2018-04-20 11:26:30', '20');
+INSERT INTO `topics` VALUES ('28', '请问社区可以用了吗？', '如题，嗯。不知道社区系统是否已正式开发了face[疑问] \nimg[http://192.168.1.192/png//9.jpg] ', '16', '2018-04-21 16:53:06', '80');
+INSERT INTO `topics` VALUES ('29', '新的一周', '新的一周开始了，大家努力工作和学习啊face[嘻嘻] \nimg[http://192.168.1.192/png//8.jpg] ', '12', '2018-04-23 08:36:03', '20');
+INSERT INTO `topics` VALUES ('30', '想换个新手机，不知道那个好？', '求推荐2000价位的手机？face[嘻嘻] \nimg[http://192.168.1.192/png//mmp.jpg] ', '35', '2018-04-27 08:33:29', '20');
+
+-- ----------------------------
+-- Table structure for `topic_reply`
+-- ----------------------------
+DROP TABLE IF EXISTS `topic_reply`;
+CREATE TABLE `topic_reply` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `topic_id` int(11) NOT NULL,
+  `reply_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of topic_reply
+-- ----------------------------
+INSERT INTO `topic_reply` VALUES ('1', '1', '1');
+INSERT INTO `topic_reply` VALUES ('2', '17', '4');
+INSERT INTO `topic_reply` VALUES ('3', '1', '5');
+INSERT INTO `topic_reply` VALUES ('4', '1', '6');
+INSERT INTO `topic_reply` VALUES ('5', '1', '7');
+INSERT INTO `topic_reply` VALUES ('6', '1', '8');
+INSERT INTO `topic_reply` VALUES ('7', '1', '9');
+INSERT INTO `topic_reply` VALUES ('8', '1', '10');
+INSERT INTO `topic_reply` VALUES ('9', '1', '11');
+INSERT INTO `topic_reply` VALUES ('10', '1', '12');
+INSERT INTO `topic_reply` VALUES ('11', '1', '13');
+INSERT INTO `topic_reply` VALUES ('12', '1', '14');
+INSERT INTO `topic_reply` VALUES ('13', '1', '15');
+INSERT INTO `topic_reply` VALUES ('14', '1', '16');
+INSERT INTO `topic_reply` VALUES ('15', '1', '17');
+INSERT INTO `topic_reply` VALUES ('16', '1', '18');
+INSERT INTO `topic_reply` VALUES ('17', '1', '19');
+INSERT INTO `topic_reply` VALUES ('18', '1', '20');
+INSERT INTO `topic_reply` VALUES ('19', '1', '21');
+INSERT INTO `topic_reply` VALUES ('20', '1', '22');
+INSERT INTO `topic_reply` VALUES ('21', '1', '23');
+INSERT INTO `topic_reply` VALUES ('22', '1', '24');
+INSERT INTO `topic_reply` VALUES ('23', '1', '25');
+INSERT INTO `topic_reply` VALUES ('24', '1', '26');
+INSERT INTO `topic_reply` VALUES ('25', '1', '27');
+INSERT INTO `topic_reply` VALUES ('26', '1', '28');
+INSERT INTO `topic_reply` VALUES ('27', '1', '29');
+INSERT INTO `topic_reply` VALUES ('28', '1', '30');
+INSERT INTO `topic_reply` VALUES ('29', '1', '31');
+INSERT INTO `topic_reply` VALUES ('30', '1', '32');
+INSERT INTO `topic_reply` VALUES ('31', '1', '33');
+INSERT INTO `topic_reply` VALUES ('32', '1', '34');
+INSERT INTO `topic_reply` VALUES ('33', '1', '35');
+INSERT INTO `topic_reply` VALUES ('34', '2', '36');
+INSERT INTO `topic_reply` VALUES ('35', '1', '37');
+INSERT INTO `topic_reply` VALUES ('36', '18', '38');
+INSERT INTO `topic_reply` VALUES ('37', '18', '39');
+INSERT INTO `topic_reply` VALUES ('38', '19', '40');
+INSERT INTO `topic_reply` VALUES ('39', '20', '41');
+INSERT INTO `topic_reply` VALUES ('40', '20', '42');
+INSERT INTO `topic_reply` VALUES ('41', '20', '43');
+INSERT INTO `topic_reply` VALUES ('42', '20', '44');
+INSERT INTO `topic_reply` VALUES ('43', '20', '45');
+INSERT INTO `topic_reply` VALUES ('44', '20', '46');
+INSERT INTO `topic_reply` VALUES ('45', '20', '47');
+INSERT INTO `topic_reply` VALUES ('46', '21', '48');
+INSERT INTO `topic_reply` VALUES ('49', '21', '51');
+INSERT INTO `topic_reply` VALUES ('50', '21', '52');
+INSERT INTO `topic_reply` VALUES ('51', '21', '53');
+INSERT INTO `topic_reply` VALUES ('52', '21', '54');
+INSERT INTO `topic_reply` VALUES ('53', '21', '55');
+INSERT INTO `topic_reply` VALUES ('54', '21', '56');
+INSERT INTO `topic_reply` VALUES ('55', '21', '57');
+INSERT INTO `topic_reply` VALUES ('56', '22', '58');
+INSERT INTO `topic_reply` VALUES ('57', '20', '59');
+INSERT INTO `topic_reply` VALUES ('61', '25', '63');
+INSERT INTO `topic_reply` VALUES ('62', '25', '64');
+INSERT INTO `topic_reply` VALUES ('63', '28', '65');
+INSERT INTO `topic_reply` VALUES ('64', '28', '66');
+INSERT INTO `topic_reply` VALUES ('65', '28', '67');
+INSERT INTO `topic_reply` VALUES ('66', '29', '68');
+INSERT INTO `topic_reply` VALUES ('67', '2', '69');
+INSERT INTO `topic_reply` VALUES ('68', '30', '70');
+INSERT INTO `topic_reply` VALUES ('69', '30', '71');
+INSERT INTO `topic_reply` VALUES ('70', '30', '72');
+INSERT INTO `topic_reply` VALUES ('71', '30', '73');
+INSERT INTO `topic_reply` VALUES ('72', '30', '74');
+INSERT INTO `topic_reply` VALUES ('73', '30', '75');
+INSERT INTO `topic_reply` VALUES ('74', '30', '76');
+INSERT INTO `topic_reply` VALUES ('75', '30', '77');
+INSERT INTO `topic_reply` VALUES ('76', '30', '78');
+INSERT INTO `topic_reply` VALUES ('77', '30', '79');
+INSERT INTO `topic_reply` VALUES ('78', '24', '80');
+INSERT INTO `topic_reply` VALUES ('79', '24', '81');
+
+-- ----------------------------
+-- Table structure for `topic_tab`
+-- ----------------------------
+DROP TABLE IF EXISTS `topic_tab`;
+CREATE TABLE `topic_tab` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `topic_id` int(11) NOT NULL,
+  `tab_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of topic_tab
+-- ----------------------------
+INSERT INTO `topic_tab` VALUES ('1', '1', '2');
+INSERT INTO `topic_tab` VALUES ('2', '1', '1');
+INSERT INTO `topic_tab` VALUES ('3', '2', '2');
+INSERT INTO `topic_tab` VALUES ('4', '2', '8');
+INSERT INTO `topic_tab` VALUES ('7', '12', '2');
+INSERT INTO `topic_tab` VALUES ('8', '12', '8');
+INSERT INTO `topic_tab` VALUES ('9', '12', '6');
+INSERT INTO `topic_tab` VALUES ('13', '14', '1');
+INSERT INTO `topic_tab` VALUES ('14', '14', '2');
+INSERT INTO `topic_tab` VALUES ('15', '14', '3');
+INSERT INTO `topic_tab` VALUES ('16', '15', '1');
+INSERT INTO `topic_tab` VALUES ('17', '15', '2');
+INSERT INTO `topic_tab` VALUES ('18', '15', '3');
+INSERT INTO `topic_tab` VALUES ('22', '17', '1');
+INSERT INTO `topic_tab` VALUES ('23', '17', '2');
+INSERT INTO `topic_tab` VALUES ('24', '17', '3');
+INSERT INTO `topic_tab` VALUES ('25', '18', '1');
+INSERT INTO `topic_tab` VALUES ('26', '18', '2');
+INSERT INTO `topic_tab` VALUES ('27', '18', '3');
+INSERT INTO `topic_tab` VALUES ('29', '19', '1');
+INSERT INTO `topic_tab` VALUES ('30', '19', '2');
+INSERT INTO `topic_tab` VALUES ('31', '19', '3');
+INSERT INTO `topic_tab` VALUES ('32', '20', '1');
+INSERT INTO `topic_tab` VALUES ('33', '20', '2');
+INSERT INTO `topic_tab` VALUES ('34', '20', '3');
+INSERT INTO `topic_tab` VALUES ('38', '22', '1');
+INSERT INTO `topic_tab` VALUES ('39', '22', '2');
+INSERT INTO `topic_tab` VALUES ('40', '22', '3');
+INSERT INTO `topic_tab` VALUES ('47', '25', '7');
+INSERT INTO `topic_tab` VALUES ('49', '27', '7');
+INSERT INTO `topic_tab` VALUES ('50', '28', '4');
+INSERT INTO `topic_tab` VALUES ('55', '21', '1');
+INSERT INTO `topic_tab` VALUES ('56', '21', '2');
+INSERT INTO `topic_tab` VALUES ('57', '21', '3');
+INSERT INTO `topic_tab` VALUES ('58', '21', '9');
+INSERT INTO `topic_tab` VALUES ('59', '21', '10');
+INSERT INTO `topic_tab` VALUES ('66', '29', '8');
+INSERT INTO `topic_tab` VALUES ('67', '29', '1');
+INSERT INTO `topic_tab` VALUES ('68', '29', '9');
+INSERT INTO `topic_tab` VALUES ('80', '26', '7');
+INSERT INTO `topic_tab` VALUES ('81', '26', '9');
+INSERT INTO `topic_tab` VALUES ('82', '26', '10');
+INSERT INTO `topic_tab` VALUES ('87', '24', '1');
+INSERT INTO `topic_tab` VALUES ('88', '24', '2');
+INSERT INTO `topic_tab` VALUES ('89', '24', '3');
+INSERT INTO `topic_tab` VALUES ('90', '24', '9');
+INSERT INTO `topic_tab` VALUES ('91', '24', '10');
+INSERT INTO `topic_tab` VALUES ('97', '30', '4');
+INSERT INTO `topic_tab` VALUES ('98', '30', '1');
+INSERT INTO `topic_tab` VALUES ('99', '30', '9');
+INSERT INTO `topic_tab` VALUES ('100', '30', '10');
+
+-- ----------------------------
+-- Table structure for `uinfo`
+-- ----------------------------
+DROP TABLE IF EXISTS `uinfo`;
+CREATE TABLE `uinfo` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `vip` tinyint(4) DEFAULT NULL,
+  `sex` varchar(10) DEFAULT NULL,
+  `sign` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `credit` int(11) DEFAULT NULL,
+  `info` varchar(255) DEFAULT NULL,
+  `last_sign_time` datetime DEFAULT NULL,
+  `count_day` int(11) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uinfo
+-- ----------------------------
+INSERT INTO `uinfo` VALUES ('1', '6', '男', '啦啦啦', '金华', '1610228055@qq.com', '18868343731', '1000', '网站开发者', '2018-04-27 08:48:15', '6', 'http://192.168.1.192/png//10.jpg');
+INSERT INTO `uinfo` VALUES ('2', '0', '男', '这个人很懒，什么都没有写', '义乌', '1610228055', '13989420126', '100', '网站内测', '2018-04-21 16:49:04', '2', 'http://192.168.1.192/png//7.jpg');
+INSERT INTO `uinfo` VALUES ('9', null, null, '这个人很懒，什么都没有留下', null, '000002@163.com', null, null, null, null, null, 'http://192.168.1.192/png/11.jpg');
+INSERT INTO `uinfo` VALUES ('10', null, null, '这个人很懒，什么都没有留下', null, '000009@sd.cv', null, null, null, null, null, 'http://192.168.1.192/png/11.jpg');
+
+-- ----------------------------
+-- Table structure for `users`
+-- ----------------------------
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `last_time` datetime DEFAULT NULL,
+  `last_ip` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `locked` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of users
+-- ----------------------------
+INSERT INTO `users` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '2018-03-01 16:14:34', '2018-05-04 09:15:13', '192.168.1.192', '0', '0');
+INSERT INTO `users` VALUES ('2', '000001', '04fc711301f3c784d66955d98d399afb', '2018-04-19 11:48:15', '2018-05-04 09:16:08', '192.168.1.192', '0', '0');
+INSERT INTO `users` VALUES ('9', '000002', '768c1c687efe184ae6dd2420710b8799', '2018-04-21 15:04:35', '2018-04-28 14:54:49', '192.168.1.192', '0', '0');
+INSERT INTO `users` VALUES ('10', '000009', 'e10adc3949ba59abbe56e057f20f883e', '2018-05-03 16:20:47', '2018-05-03 16:24:30', '127.0.0.1', '0', '0');
+
+-- ----------------------------
+-- Table structure for `users_roles`
+-- ----------------------------
+DROP TABLE IF EXISTS `users_roles`;
+CREATE TABLE `users_roles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of users_roles
+-- ----------------------------
+INSERT INTO `users_roles` VALUES ('1', '1', '1');
+INSERT INTO `users_roles` VALUES ('2', '3', '2');
+INSERT INTO `users_roles` VALUES ('3', '9', '2');
+INSERT INTO `users_roles` VALUES ('4', '10', '2');
+
+-- ----------------------------
+-- Table structure for `user_reply`
+-- ----------------------------
+DROP TABLE IF EXISTS `user_reply`;
+CREATE TABLE `user_reply` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `reply_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user_reply
+-- ----------------------------
+INSERT INTO `user_reply` VALUES ('1', '1', '1');
+INSERT INTO `user_reply` VALUES ('2', '1', '4');
+INSERT INTO `user_reply` VALUES ('3', '1', '5');
+INSERT INTO `user_reply` VALUES ('4', '1', '6');
+INSERT INTO `user_reply` VALUES ('5', '1', '7');
+INSERT INTO `user_reply` VALUES ('6', '1', '8');
+INSERT INTO `user_reply` VALUES ('7', '1', '9');
+INSERT INTO `user_reply` VALUES ('8', '1', '10');
+INSERT INTO `user_reply` VALUES ('9', '1', '11');
+INSERT INTO `user_reply` VALUES ('10', '1', '12');
+INSERT INTO `user_reply` VALUES ('11', '1', '13');
+INSERT INTO `user_reply` VALUES ('12', '1', '14');
+INSERT INTO `user_reply` VALUES ('13', '1', '15');
+INSERT INTO `user_reply` VALUES ('14', '1', '16');
+INSERT INTO `user_reply` VALUES ('15', '1', '17');
+INSERT INTO `user_reply` VALUES ('16', '1', '18');
+INSERT INTO `user_reply` VALUES ('17', '1', '19');
+INSERT INTO `user_reply` VALUES ('18', '1', '20');
+INSERT INTO `user_reply` VALUES ('19', '1', '21');
+INSERT INTO `user_reply` VALUES ('20', '1', '22');
+INSERT INTO `user_reply` VALUES ('21', '1', '23');
+INSERT INTO `user_reply` VALUES ('22', '1', '24');
+INSERT INTO `user_reply` VALUES ('23', '1', '25');
+INSERT INTO `user_reply` VALUES ('24', '1', '26');
+INSERT INTO `user_reply` VALUES ('25', '1', '27');
+INSERT INTO `user_reply` VALUES ('26', '1', '28');
+INSERT INTO `user_reply` VALUES ('27', '1', '29');
+INSERT INTO `user_reply` VALUES ('28', '1', '30');
+INSERT INTO `user_reply` VALUES ('29', '1', '31');
+INSERT INTO `user_reply` VALUES ('30', '1', '32');
+INSERT INTO `user_reply` VALUES ('31', '1', '33');
+INSERT INTO `user_reply` VALUES ('32', '1', '34');
+INSERT INTO `user_reply` VALUES ('33', '1', '35');
+INSERT INTO `user_reply` VALUES ('34', '1', '36');
+INSERT INTO `user_reply` VALUES ('35', '1', '37');
+INSERT INTO `user_reply` VALUES ('36', '1', '38');
+INSERT INTO `user_reply` VALUES ('37', '1', '39');
+INSERT INTO `user_reply` VALUES ('38', '1', '40');
+INSERT INTO `user_reply` VALUES ('39', '1', '41');
+INSERT INTO `user_reply` VALUES ('40', '1', '42');
+INSERT INTO `user_reply` VALUES ('41', '1', '43');
+INSERT INTO `user_reply` VALUES ('42', '1', '44');
+INSERT INTO `user_reply` VALUES ('43', '1', '45');
+INSERT INTO `user_reply` VALUES ('44', '1', '46');
+INSERT INTO `user_reply` VALUES ('45', '2', '47');
+INSERT INTO `user_reply` VALUES ('46', '2', '48');
+INSERT INTO `user_reply` VALUES ('47', '1', '49');
+INSERT INTO `user_reply` VALUES ('48', '1', '50');
+INSERT INTO `user_reply` VALUES ('49', '1', '51');
+INSERT INTO `user_reply` VALUES ('50', '1', '52');
+INSERT INTO `user_reply` VALUES ('51', '2', '53');
+INSERT INTO `user_reply` VALUES ('52', '2', '54');
+INSERT INTO `user_reply` VALUES ('53', '2', '55');
+INSERT INTO `user_reply` VALUES ('54', '2', '56');
+INSERT INTO `user_reply` VALUES ('55', '1', '57');
+INSERT INTO `user_reply` VALUES ('56', '1', '58');
+INSERT INTO `user_reply` VALUES ('57', '1', '59');
+INSERT INTO `user_reply` VALUES ('58', '1', '60');
+INSERT INTO `user_reply` VALUES ('59', '1', '61');
+INSERT INTO `user_reply` VALUES ('60', '2', '62');
+INSERT INTO `user_reply` VALUES ('61', '1', '63');
+INSERT INTO `user_reply` VALUES ('62', '9', '64');
+INSERT INTO `user_reply` VALUES ('63', '2', '65');
+INSERT INTO `user_reply` VALUES ('64', '1', '66');
+INSERT INTO `user_reply` VALUES ('65', '9', '67');
+INSERT INTO `user_reply` VALUES ('66', '1', '68');
+INSERT INTO `user_reply` VALUES ('67', '1', '69');
+INSERT INTO `user_reply` VALUES ('68', '1', '70');
+INSERT INTO `user_reply` VALUES ('69', '2', '71');
+INSERT INTO `user_reply` VALUES ('70', '1', '72');
+INSERT INTO `user_reply` VALUES ('71', '1', '73');
+INSERT INTO `user_reply` VALUES ('72', '1', '74');
+INSERT INTO `user_reply` VALUES ('73', '1', '75');
+INSERT INTO `user_reply` VALUES ('74', '2', '76');
+INSERT INTO `user_reply` VALUES ('75', '1', '77');
+INSERT INTO `user_reply` VALUES ('76', '1', '78');
+INSERT INTO `user_reply` VALUES ('77', '1', '79');
+INSERT INTO `user_reply` VALUES ('78', '1', '80');
+INSERT INTO `user_reply` VALUES ('79', '9', '81');
+
+-- ----------------------------
+-- Table structure for `user_topic`
+-- ----------------------------
+DROP TABLE IF EXISTS `user_topic`;
+CREATE TABLE `user_topic` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `topic_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user_topic
+-- ----------------------------
+INSERT INTO `user_topic` VALUES ('1', '1', '1');
+INSERT INTO `user_topic` VALUES ('2', '1', '2');
+INSERT INTO `user_topic` VALUES ('9', '1', '10');
+INSERT INTO `user_topic` VALUES ('10', '1', '12');
+INSERT INTO `user_topic` VALUES ('12', '1', '14');
+INSERT INTO `user_topic` VALUES ('13', '1', '15');
+INSERT INTO `user_topic` VALUES ('15', '1', '17');
+INSERT INTO `user_topic` VALUES ('16', '1', '18');
+INSERT INTO `user_topic` VALUES ('17', '1', '19');
+INSERT INTO `user_topic` VALUES ('18', '1', '20');
+INSERT INTO `user_topic` VALUES ('19', '2', '21');
+INSERT INTO `user_topic` VALUES ('20', '1', '22');
+INSERT INTO `user_topic` VALUES ('22', '1', '24');
+INSERT INTO `user_topic` VALUES ('23', '1', '25');
+INSERT INTO `user_topic` VALUES ('24', '1', '26');
+INSERT INTO `user_topic` VALUES ('25', '1', '27');
+INSERT INTO `user_topic` VALUES ('26', '2', '28');
+INSERT INTO `user_topic` VALUES ('27', '1', '29');
+INSERT INTO `user_topic` VALUES ('28', '1', '30');
+
+-- ----------------------------
+-- Table structure for `user_uinfo`
+-- ----------------------------
+DROP TABLE IF EXISTS `user_uinfo`;
+CREATE TABLE `user_uinfo` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `uInfo_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user_uinfo
+-- ----------------------------
+INSERT INTO `user_uinfo` VALUES ('1', '1', '1');
+INSERT INTO `user_uinfo` VALUES ('2', '2', '2');
+INSERT INTO `user_uinfo` VALUES ('4', '9', '9');
+INSERT INTO `user_uinfo` VALUES ('5', '10', '10');
